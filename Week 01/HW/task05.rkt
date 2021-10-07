@@ -1,10 +1,11 @@
 #lang racket
 
-(define (snail  height distance-day distance-night)
+(define (snail  height slideUp slideDown)
     (cond
-        [(<= height distance-day) 1]
-        [(= (- distance-day distance-night) 1) (- height distance-night)]
-        [ else (round(/ height (- distance-day distance-night)))]
+        [ (< slideUp slideDown) (error "Sliding up distance should be greater than sliding down distance")]
+        [(<= height slideUp) 1]
+        [(= (- slideUp slideDown) 1) (- height slideDown)]
+        [ else (round(/ height (- slideUp slideDown)))]
     )
 )
 

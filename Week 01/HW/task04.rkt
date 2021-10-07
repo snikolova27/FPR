@@ -2,6 +2,7 @@
 
 (define (growing-plant upSpeed downSpeed desiredHeight)
   (cond
+    [(> downSpeed upSpeed) (error "downSpeed is greater than upSpeed")]
     [(<= desiredHeight upSpeed) 1]
     [ else (round(/ desiredHeight (- upSpeed downSpeed)))]
     )
