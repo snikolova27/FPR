@@ -1,0 +1,37 @@
+#lang racket
+
+(define (digit-occurs? number digit)
+    (cond
+    [(= number digit) #t]
+    [(= (remainder number 10) digit) #t]
+    [(and(< number 10) (not (= number digit))) #f]
+    [else   (digit-occurs? (quotient number 10) digit)]
+
+ )
+)
+ (define (sum-digits number)
+   (define (helper left-over sum)
+     (cond
+       [(< left-over 10) (+ sum left-over)]
+       [else (helper (quotient loeft-over 10) (+ sum (remainder left-over 10)))]
+     )
+   )
+ )
+
+(define (sum-counts-iter x d)
+  (define (helper current-number result)
+    (cond
+      [(> current-num x) result]
+      [(digit-occurs? current-number d) (helper (add1 current-number) (+ result current-number))]
+      [else (helper (add1 current-number) result)]
+    )
+  )
+  (sum-digits (helper 1 x))
+)
+(sum-counts-iter 1 1) ; -> 1
+(sum-counts-iter 5123 1) ; -> 19
+(sum-counts-iter 1234 8) ; -> 10
+(sum-counts-iter 5555 5) ; -> 10
+(sum-counts-iter 65432 6) ; -> 11
+(sum-counts-iter 70000 1) ; -> 11
+(sum-counts-iter 123321 1) ; -> 29
