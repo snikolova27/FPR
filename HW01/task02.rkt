@@ -1,8 +1,5 @@
 #lang racket
 
-;Task02
-
-
 (define (add-ones n)
   (define (helper left-over res pos)
     (cond
