@@ -1,0 +1,15 @@
+#lang racket
+(define (itinerary-flights flights)
+  (define (lex-flight start)
+    (define (helper result )
+      ()
+    )
+  )
+  
+  (lambda (x)
+    (cond
+      [(not (assoc x flights)) (error "No such element in list")]
+      []
+    )
+  )
+)

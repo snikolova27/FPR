@@ -1,0 +1,29 @@
+#lang racket
+
+(define (add-padding-top xs x )
+  (define (helper result len)
+    (cond
+      [(zero? len) result]
+      [else (helper (cons x result) (sub1 len))]
+    )
+  )
+  (helper '() (+ 2 (length xs)))
+ )
+
+
+(define (pad xs)
+  (define (len) (length xs))
+  (define (helper result row el)
+    (list (append '(el) row '(el)))
+  )
+  )
+(define (res) '())
+ ; (helper '() (car xs))
+  
+  (lambda (x)
+    (cond
+      [(zero? len) (append (add-padding-top xs x) res)]
+      []
+    )
+   )
+)
