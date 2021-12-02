@@ -10,8 +10,7 @@ main = do
 isPalindrome :: Int -> Bool 
 isPalindrome x = reversed x 0 == x
  where 
-     reversed::Int->Int->Int
-     reversed leftOver result
-      |leftOver == 0 = result
-      |otherwise = reversed (div leftOver 10) (result *10 + mod leftOver 10)
+     reversed:: Int -> Int -> Int
+     reversed 0 result =  result
+     reversed leftOver result = reversed (div leftOver 10) (result *10 + mod leftOver 10)
 
