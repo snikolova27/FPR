@@ -1,5 +1,4 @@
 import Data.Char
-import GHC.Base (VecElem(Int16ElemRep))
 main :: IO()
 main = do
     print $ reverseOrdSuff 37563 == 36
@@ -25,12 +24,7 @@ getAscendingSubList xs = helper [head xs] xs
      helper current leftOver = if (head leftOver) < (head $tail leftOver) then helper (current ++ [head $ tail leftOver]) (tail leftOver) else  current
 
 xsToNum :: [Int] -> Int
-xsToNum xs = helper xs 0
- where 
-     helper :: [Int] -> Int -> Int
-     helper [] current = current
-     helper leftOver current = helper (tail leftOver) (current + (head leftOver) * (10 ^ (length leftOver- 1)))
-
+xsToNum = read .map intToDigit
 
 reverseOrdSuff :: Int -> Int
 reverseOrdSuff n =  xsToNum $ getAscendingSubList $ reverseN n

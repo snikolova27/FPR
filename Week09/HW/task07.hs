@@ -15,17 +15,13 @@ main = do
     print $ duplicateCount (['a'..'z'] ++ ['A'..'Z']) == 26
 
 cntOccurences :: [Char] -> Char -> Int
-cntOccurences [] x = 0
-cntOccurences leftOver x  = if elem x leftOver then  1 + cntOccurences(tail leftOver) x  else  cntOccurences (tail leftOver) x 
+cntOccurences leftOver x  = length $ filter (==x) leftOver 
 
 getListOfDuplicates :: [Char] -> [Char]
-getListOfDuplicates xs = helper [] xs
- where
-     helper :: [Char] -> [Char] -> [Char]
-     helper current [] = current
-     helper current leftOver
-      | cntOccurences leftOver (head leftOver) > 1 = helper (current ++ [head leftOver]) (tail leftOver)
-      | otherwise = helper current (tail leftOver)
+getListOfDuplicates [] =[]
+getListOfDuplicates (x:xs)
+ | elem x xs = x: getListOfDuplicates xs
+ | otherwise = getListOfDuplicates xs
 
 duplicateCount :: [Char] -> Int 
 duplicateCount xs = length $ nub $ getListOfDuplicates $ map toLower xs
