@@ -1,5 +1,6 @@
 import Data.Char
 import Data.List
+import Control.Arrow (ArrowChoice(right))
 
 main :: IO()
 main = do
@@ -16,22 +17,21 @@ main = do
     print $ areEqual charBTree charBTree == True
     print $ areEqual numberBTree (Node 5 (Node 12 (Node 1 (Node 96 Nil Nil) Nil) (Node 0 Nil Nil)) (Node 8 (Node 2 Nil Nil) (Node 5 Nil (Node 21 Nil Nil)))) == False
 
-    print$ getListOfLevels  (Node 5 (Node 12 (Node 1 (Node 96 Nil Nil) Nil) (Node 0 Nil Nil)) (Node 4 (Node 2 Nil Nil) (Node 5 Nil Nil))) 0
-  --  print $ setLevels numberBTree == Node (0,5) (Node (1,12) (Node (2,1) (Node (3,96) Nil Nil) Nil) (Node (2,0) Nil Nil)) (Node (1,4) (Node (2,2) Nil Nil) (Node (2,5) Nil (Node (3,21) Nil Nil)))
-  --  print $ setLevels charBTree == Node (0,'k') (Node (1,'a') (Node (2,'h') Nil Nil) (Node (2,'s') Nil Nil)) (Node (1,'l') (Node (2,'e') Nil Nil) (Node (2,'l') Nil Nil))
+    --print$ getListOfLevels  (Node 5 (Node 12 (Node 1 (Node 96 Nil Nil) Nil) (Node 0 Nil Nil)) (Node 4 (Node 2 Nil Nil) (Node 5 Nil Nil))) 0
+    
+    print $ setLevels numberBTree  == Node (0,5) (Node (1,12) (Node (2,1) (Node (3,96) Nil Nil) Nil) (Node (2,0) Nil Nil)) (Node (1,4) (Node (2,2) Nil Nil) (Node (2,5) Nil (Node (3,21) Nil Nil)))
+    print $ setLevels charBTree == Node (0,'k') (Node (1,'a') (Node (2,'h') Nil Nil) (Node (2,'s') Nil Nil)) (Node (1,'l') (Node (2,'e') Nil Nil) (Node (2,'l') Nil Nil))
 
     print $ mirrorTree numberBTree == Node 5 (Node 4 (Node 5 (Node 21 Nil Nil) Nil) (Node 2 Nil Nil)) (Node 12 (Node 0 Nil Nil) (Node 1 Nil (Node 96 Nil Nil)))
     print $ mirrorTree charBTree == Node 'k' (Node 'l' (Node 'l' Nil Nil) (Node 'e' Nil Nil)) (Node 'a' (Node 's' Nil Nil) (Node 'h' Nil Nil))
 
-type Vector v = (v, v)
+type Vector v = (Int, v)
 
 data BTree a = Nil | Node a (BTree a) (BTree a)  
  deriving (Show, Eq)
 
 numberBTree = Node 5 (Node 12 (Node 1 (Node 96 Nil Nil) Nil) (Node 0 Nil Nil)) (Node 4 (Node 2 Nil Nil) (Node 5 Nil (Node 21 Nil Nil)))
 charBTree = Node 'k' (Node 'a' (Node 'h' Nil Nil) (Node 's' Nil Nil)) (Node 'l' (Node 'e' Nil Nil) (Node 'l' Nil Nil))
-
-
 
 
 height :: BTree a -> Int 
@@ -57,7 +57,7 @@ areEqual t1 t2 = traverseDFS t1 == traverseDFS t2
 getListOfLevels :: BTree a-> Int->[[a]]
 getListOfLevels Nil _ = []
 getListOfLevels t level 
- | level < height t =  [getLevel t level] ++ getListOfLevels t (level + 1) 
+ | level < height t =  getLevel t level : getListOfLevels t (level + 1) 
  | otherwise = []
 
 
@@ -65,14 +65,17 @@ mirrorTree :: BTree a -> BTree a
 mirrorTree Nil = Nil
 mirrorTree (Node value left right) = Node value (mirrorTree right) (mirrorTree left)
 
--- createTreeByList :: [[Int]] -> Int->BTree v
--- createTreeByList [] _ = Nil
--- createTreeByList ([] : xss) level = createTreeByList xss level
--- createTreeByList ((x:xs):xss) level = Node (level, x) (level, (createTreeByList xs level )) (createTreeByList xss (level + 1))
-
--- setLevels:: BTree a -> BTree v
--- setLevels Nil = Nil
--- setLevels t = 
+setLevels:: BTree a -> BTree (Int, a)
+setLevels Nil = Nil
+setLevels t = helper t 0
+ where 
+   helper :: BTree a -> Int -> BTree (Int, a)
+   helper Nil _ = Nil
+   helper  (Node value left right) level = Node (level, value) (helper left (level + 1)) (helper right (level + 1))
+   
+copy :: BTree a-> BTree a
+copy Nil = Nil
+copy (Node value left right) = Node value (copy left) (copy right) 
 
 mapTree :: BTree a -> (a -> b) -> BTree b
 mapTree Nil _ = Nil
