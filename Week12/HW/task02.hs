@@ -5,7 +5,7 @@ main = do
 
     print $ getNeeded 750 db1 == [Product "Cheese" 750 5.0,Product "Water" 500 0.5,Product "Soap" 250 4.5]
 
-   -- print $ closestToAverage db1 == ["Milk","Soap"]
+    print $ closestToAverage db1 == ["Milk","Soap"]
 
     print $ cheaperAlternatives "Lamb" 5.50 db2 == 1
     print $ cheaperAlternatives "Lamb" 10  db2 == 2
@@ -34,16 +34,16 @@ getAverage db  = getTotal db / fromIntegral (length db)
 getNeeded :: Int -> Database -> Database
 getNeeded _ [] = []
 getNeeded quantity (p@(Product pName pQuantity pPrice) : ps) 
- | pQuantity <= quantity = Product pName pQuantity pPrice : getNeeded quantity ps
+ | pQuantity <= quantity = p : getNeeded quantity ps
  | otherwise  = getNeeded quantity ps
 
--- closestToAverage :: Database -> [Name]
--- closestToAverage [] = []
--- closestToAverage (p@(Product pName _ pPrice) : ps) 
---  | pPrice <= avgC && pPrice >= avgF = pName : closestToAverage ps
---  | otherwise  = closestToAverage ps
---   where avgC =  round getAverage
---         avfF = floor getAverage
+
+closestToAverage ::  Database -> [Name]
+closestToAverage [] = []
+closestToAverage db = map (\ (Product name _ _) -> name) (filter( \ (Product _ _ pPrice) -> abs(pPrice - avg) == minDiff) db)
+ where 
+     avg = getAverage db
+     minDiff  = minimum (map (\ (Product _ _ price) -> abs(price - avg)) db)
 
 cheaperAlternatives :: Name -> Price -> Database -> Int 
 cheaperAlternatives _ _ [] = 0
