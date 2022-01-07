@@ -1,4 +1,3 @@
-import Data.Data (Data)
 main :: IO()
 main = do
     print $ getAverage db1 == 4.457142857142857

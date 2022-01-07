@@ -1,6 +1,5 @@
 import Data.Char
 import Data.List
-import Control.Arrow (ArrowChoice(right))
 
 main :: IO()
 main = do

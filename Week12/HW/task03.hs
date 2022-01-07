@@ -1,4 +1,3 @@
-import Graphics.Rendering.OpenGL (MatrixMode(Color))
 main :: IO()
 main = do
     print colourBTree
@@ -6,8 +5,6 @@ main = do
     print $ highest Green colourBTree == 3
     print $ highest Blue colourBTree  == 4
   --  print $ levelsWithColor Blue colourBTree
-
-
 
 data Color  = Red | Green | Blue 
  deriving (Show, Eq)
@@ -23,20 +20,10 @@ highest color tree = maximum (levelsWithColor color tree)
 
 levelsWithColor :: Color -> BTree Color -> [Int]
 levelsWithColor _ Nil = []
-levelsWithColor color tree = helper 1 (height tree) tree
+levelsWithColor color tree = helper 1 tree
  where 
-     helper :: Int -> Int-> BTree Color -> [Int]
-     helper _ _ Nil = []
-     helper current h (Node colorT left right) 
-      | colorT == color && current <= h = [current] ++  helper (current +1) h left ++ helper (current +1 ) h right
-      | otherwise = helper (current +1) h left ++ helper (current +1 ) h right
-
-
-getLevel :: BTree a -> Int -> [a]
-getLevel Nil _ = []
-getLevel (Node value _ _) 0 = [value]
-getLevel (Node value left right) k = getLevel left (k - 1) ++ getLevel right (k - 1)
-
-height :: BTree Color -> Int 
-height Nil = 0
-height (Node _ left right) = max ( 1 + height left) (1 + height right)
+     helper :: Int ->  BTree Color -> [Int]
+     helper _ Nil = []
+     helper current (Node colorT left right) 
+      | colorT == color = [current] ++ helper (current + 1)  left ++ helper (current + 1)  right
+      | otherwise = helper (current + 1) left ++ helper (current + 1)  right
