@@ -15,7 +15,6 @@ listLeaves :: [(Parent, Child, Child)] -> [Int]
 listLeaves [] = []
 listLeaves nodes = let parents = getParents nodes; all =  nub $ getNodes nodes in all \\ parents
 
-
 getParents :: [(Parent, Child, Child)] -> [Int]
 getParents [] = []
 getParents nodes  = nub $ map (\ (p, _, _ ) -> p) nodes 
