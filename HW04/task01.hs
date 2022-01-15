@@ -105,9 +105,9 @@ afterDamaged s@(ship, results, dates) = dateDamaged < head datesNotDamaged
    dateDamaged = getDateDamagedOfShip s
    datesNotDamaged =  sort $ getDateNotDamagedOfShip s
 
-afterDamagedAll :: [(Name, [Result],[Date])]-> Bool
-afterDamagedAll [] = True
-afterDamagedAll (current:left) = afterDamaged current && afterDamagedAll left
+afterDamagedAll :: [(Name, [Result],[Date])]-> [(Name, [Result],[Date])]
+afterDamagedAll [] = []
+afterDamagedAll (current:left) = if afterDamaged current then current : afterDamagedAll left else afterDamagedAll left
 
 getOnlyNames :: [(Name, [Result],[Date])]-> [Name]
 getOnlyNames [] = []
@@ -125,6 +125,6 @@ inBattleAfterDamaged (outcomes, battles, ships) = names
     moreThanDamaged = nub $ filteredNotOnlyDamaged (getOutcomesForShips outcomes outcomes)
     results = allShipsResults moreThanDamaged battles outcomes
     areAllInBattle = afterDamagedAll results
-    names = if areAllInBattle then getOnlyNames results else []
+    names = getOnlyNames results 
     
     
